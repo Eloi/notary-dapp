@@ -7,6 +7,12 @@ contract Notary {
         string owner;
     }
     
+    event DocumentRegistration(
+        uint256 timestamp,
+        bytes32 indexed hash,
+        string indexed owner
+        );
+    
     mapping (bytes32 => Document) documentByHashMap;
     mapping (string => bytes32[]) documentHashesByOwnerMap;
     
@@ -16,6 +22,7 @@ contract Notary {
         documentByHashMap[documentHash].owner = documentOwner;
 
         documentHashesByOwnerMap[documentOwner].push(documentHash);
+        emit DocumentRegistration(now, documentHash, documentOwner);
 
         return true;
     }
